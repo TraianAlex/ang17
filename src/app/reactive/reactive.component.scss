@@ -1,0 +1,74 @@
+:host {
+  // https://coolors.co/ff16dc-494947-bfc0c0-ef5d60-30343f
+  /* RGB */
+  --highlight: rgba(255, 22, 220, 1);
+  --backcolor: rgba(73, 73, 71, 1);
+  --backcolor2: rgba(191, 192, 192, 1);
+  --header: rgba(239, 93, 96, 1);
+  --header-dark: rgba(48, 52, 63, 1);
+
+  max-height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.stencil {
+  font-family: 'Saira Stencil One', cursive;
+}
+.bungee {
+  font-family: 'Bungee Shade', cursive;
+}
+// html,
+// body {
+//   margin: 0px;
+//   width: 100%;
+//   height: 100%;
+//   max-height: 100vh;
+// }
+
+.background-scroll-shadows {
+  background:
+          /* Shadow covers */ linear-gradient(
+          var(--backcolor2) 30%,
+          rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), var(--backcolor2) 70%) 0 100%,
+      /* Shadows */
+          radial-gradient(
+              farthest-side at 50% 0,
+              rgba(0, 0, 0, 0.3),
+              rgba(0, 0, 0, 0)
+          ),
+      radial-gradient(
+              farthest-side at 50% 100%,
+              rgba(0, 0, 0, 0.3),
+              rgba(0, 0, 0, 0)
+          )
+          0 100%;
+  background:
+          /* Shadow covers */ linear-gradient(
+          var(--backcolor2) 30%,
+          rgba(255, 255, 255, 0)
+      ),
+      linear-gradient(rgba(255, 255, 255, 0), var(--backcolor2) 70%) 0 100%,
+      /* Shadows */
+          radial-gradient(
+              farthest-side at 50% 0,
+              rgba(0, 0, 0, 0.3),
+              rgba(0, 0, 0, 0)
+          ),
+      radial-gradient(
+              farthest-side at 50% 100%,
+              rgba(0, 0, 0, 0.3),
+              rgba(0, 0, 0, 0)
+          )
+          0 100%;
+  background-repeat: no-repeat;
+  background-color: var(--backcolor2);
+  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+
+  /* Opera doesn't support this in the shorthand */
+  background-attachment: local, local, scroll, scroll;
+}

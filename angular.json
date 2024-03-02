@@ -30,9 +30,31 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/web/assets/mobirise-icons2/mobirise2.css",
+              "src/assets/bootstrap/css/bootstrap.min.css",
+              "src/assets/bootstrap/css/bootstrap-grid.min.css",
+              "src/assets/bootstrap/css/bootstrap-reboot.min.css",
+              "src/assets/parallax/jarallax.css",
+              "src/assets/popup-overlay-plugin/style.css",
+              "src/assets/dropdown/css/style.css",
+              "src/assets/socicon/css/styles.css",
+              "src/assets/theme/css/style.css",
+              "src/assets/recaptcha.css",
+              "src/assets/mobirise/css/mbr-additional.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/bootstrap/js/bootstrap.bundle.min.js",
+              "src/assets/parallax/jarallax.js",
+              "src/assets/smoothscroll/smooth-scroll.js",
+              "src/assets/ytplayer/index.js",
+              "src/assets/dropdown/js/navbar-dropdown.js",
+              "src/assets/mbr-switch-arrow/mbr-switch-arrow.js",           
+              "src/assets/embla/embla.min.js",
+              "src/assets/embla/script.js",
+              "src/assets/theme/js/script.js",
+              "src/assets/formoid.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -97,5 +119,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

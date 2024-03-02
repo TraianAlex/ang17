@@ -1,0 +1,25 @@
+<div>
+  <h1>Test Component</h1>
+  <ng-container
+    *ngComponentOutlet="currentB.component; inputs: currentB.inputs"
+  />
+  <ng-container
+    *ngComponentOutlet="currentA.component; inputs: currentB.inputs"
+  />
+  <ng-container *ngComponentOutlet="dataC.component; inputs: dataC.inputs" />
+  <ng-container *ngComponentOutlet="dataD.component; inputs: dataD.inputs" />
+
+  <!-- <app-e-component #test1></app-e-component> -->
+
+  <!-- <ng-container
+    [ngTemplateOutlet]="itemTemplateRef"
+    [ngTemplateOutletContext]="{ $implicit: item }"
+  ></ng-container> -->
+  <!-- <ng-template #itemTemplate let-item>
+    <app-e-component [item]="item"></app-e-component>
+  </ng-template> -->
+
+  <!-- <ng-container *ngTemplateOutlet="template; context: { item: item }"></ng-container> -->
+
+  <app-e-component [item]="item"></app-e-component>
+</div>

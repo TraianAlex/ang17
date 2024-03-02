@@ -1,3 +1,26 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { HomeComponent } from './home/home.component';
+import { TestComponent } from './test/test.component';
+import { ReactiveComponent } from './reactive/reactive.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'test',
+    component: TestComponent,
+  },
+  {
+    path: 'reactive',
+    component: ReactiveComponent,
+    loadChildren: () =>
+       import('./reactive/routes').then((mod) => mod.REACTIVE_ROUTES),
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
+];
