@@ -11,12 +11,12 @@
       <li class="todo" *ngFor="let todo of todos$ | async">
         <div class="view">
           <input class="toggle" type="checkbox" [checked]="todo.completed" [(ngModel)]="todo.completed" (ngModelChange)="toggleComplete(todo);">
-          <label>{{todo.title}}</label>
-          <button class="edit" (click)="editTodo(todo)">Edit</button>
-          <button class="destroy" (click)="removeTodo(todo)">Destroy</button>
+          <label *ngIf="!todo.editing">{{todo.title}}</label>
+          <button class="edit" *ngIf="!todo.editing" (click)="editTodo(todo)">Edit</button>
+          <button class="destroy" *ngIf="!todo.editing" (click)="removeTodo(todo)">Destroy</button>
+          <input class="edit" *ngIf="todo.editing" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
+          <button class="destroy" *ngIf="todo.editing" (click)="stopEditing(todo)">Cancel</button>
         </div>
-        <input class="edit" *ngIf="todo.editing" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
-        <button class="destroy" *ngIf="todo.editing" (click)="stopEditing(todo)">Cancel</button>
       </li>
     </ul>
   </section>

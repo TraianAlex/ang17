@@ -17,12 +17,12 @@
                 <button
                   class="prev" 
                   (click)="movePageBy(-1)" 
-                  [disabled]="vm.page == 1"
+                  [disabled]="vm.disablePrev"
               >Prev</button>
                 <button
                   class="next" 
                   (click)="movePageBy(1)" 
-                  [disabled]="vm.totalPages === vm.page"
+                  [disabled]="vm.disableNext"
               >Next</button>
             </span>
         </span>
