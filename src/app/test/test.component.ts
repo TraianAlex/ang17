@@ -4,11 +4,13 @@ import { TestService } from './test.service.service';
 import { CComponent } from './c-component/c-component.component';
 import { DComponent } from './d-component/d-component.component';
 import { EComponent } from './e-component/e-component.component';
+import { TodosComponent } from '../todos/todos.component';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [NgComponentOutlet, CComponent, EComponent],
+  imports: [RouterOutlet, RouterLink, NgComponentOutlet, CComponent, EComponent, TodosComponent],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
 })
