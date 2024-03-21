@@ -7,8 +7,8 @@
   --header: rgba(239, 93, 96, 1);
   --header-dark: rgba(48, 52, 63, 1);
 
-  max-height: 100vh;
-  min-height: 100vh;
+  //max-height: 100vh;
+  //min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -20,6 +20,7 @@
 .bungee {
   font-family: 'Bungee Shade', cursive;
 }
+
 // html,
 // body {
 //   margin: 0px;

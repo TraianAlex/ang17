@@ -1,3 +1,4 @@
+<div class="container-wrapper">
 <ng-container *ngIf="vm$ | async as vm">
     ShowSpinner: {{ vm.loading }}
     <div class="tool-bar">
@@ -49,6 +50,7 @@
         ></rx-hero-badge>
     </div>
   </ng-container>
+</div>
 <!-- <ng-container *ngIf="heroes$ | async as heroes">
   <div class="tool-bar">
       <span class="search-tool">
