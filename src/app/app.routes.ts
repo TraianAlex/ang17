@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
-import { TestComponent } from './test/test.component';
+import { TestComponent } from './test-components/test.component';
 import { ReactiveComponent } from './reactive/reactive.component';
 import { TodosComponent } from './todos/todos.component';
+import { TestStoreComponent } from './test-store/test-store.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,10 @@ export const routes: Routes = [
   {
     path: 'test',
     component: TestComponent,
-    children: [{ path: 'todos', component: TodosComponent }],
+    children: [
+      { path: 'todos', component: TodosComponent },
+      { path: 'selectors', component: TestStoreComponent },
+    ],
   },
   {
     path: 'reactive',

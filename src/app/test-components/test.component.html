@@ -22,8 +22,14 @@
   <!-- <ng-container *ngTemplateOutlet="template; context: { item: item }"></ng-container> -->
 
   <app-e-component [item]="item"></app-e-component>
+  <div>Total Products in Test Components {{ totalProducts$ | async }}</div>
 </div>
 
-<a [routerLink]="['/test/todos']">TODOS</a>
+<ul class="nav">
+  <li class="nav-item"><a class="nav-link" [routerLink]="['/test/todos']">TODOS</a></li>
+  <li class="nav-item"><a class="nav-link" [routerLink]="['/test/selectors']">SELECTORS</a></li>
+</ul>
 
-<router-outlet />
+<div class="container-fluid">
+  <router-outlet />
+</div>

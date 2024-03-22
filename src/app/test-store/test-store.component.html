@@ -1,0 +1,36 @@
+<ng-container *ngIf="products$ | async as prod">
+<div>
+  <h1>Products</h1>
+  <div>Total Pages: {{ totalPages$ | async }}</div>
+  <div>Current Page: {{ page$ | async }}</div>
+  <div>Total Results: {{ totalResults$ | async }}</div>
+  <div class="buttons">
+    <button
+      class="prev" 
+      (click)="movePageBy(-1)" 
+      [disabled]="(page$ | async) === 1"
+  >Prev</button>
+    <button
+      class="next" 
+      (click)="movePageBy(1)" 
+      [disabled]="(totalPages$ | async) === (page$ | async)"
+  >Next</button>
+</div>
+<span class="result-tool">
+  <label>Show Results: </label>
+  <span class="buttons">
+      <button 
+        *ngFor="let limit of testStoreService.limits"
+        (click)="setLimit(limit)"
+        [disabled]="(limit$ | async) === limit"
+      >
+          {{ limit }}
+      </button>
+  </span>
+</span>
+  <ul>
+    <li *ngFor="let product of prod">
+      {{ product | json}}
+    </li>
+  </ul>
+</div>
