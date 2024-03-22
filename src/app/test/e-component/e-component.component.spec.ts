@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EComponentComponent } from './e-component.component';
+import { EComponent } from './e-component.component';
 
 describe('EComponentComponent', () => {
-  let component: EComponentComponent;
-  let fixture: ComponentFixture<EComponentComponent>;
+  let component: EComponent;
+  let fixture: ComponentFixture<EComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EComponentComponent]
+      imports: [EComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(EComponentComponent);
+    fixture = TestBed.createComponent(EComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

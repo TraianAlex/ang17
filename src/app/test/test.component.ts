@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ContentChild, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { NgComponentOutlet } from '@angular/common';
-import { TestService } from './test.service.service';
+import { TestService } from './test.service';
 import { CComponent } from './c-component/c-component.component';
 import { DComponent } from './d-component/d-component.component';
 import { EComponent } from './e-component/e-component.component';
