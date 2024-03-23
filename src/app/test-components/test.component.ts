@@ -25,6 +25,7 @@ export class TestComponent implements OnInit, AfterViewInit {
   private data = inject(TestService).getData();
   item = 'test-item';
   totalProducts$ = this.testStoreService.totalProducts$;
+  // totalProducts$ = this.testStoreService.select((state) => state.results.total);
 
   ngOnInit(): void {
     //console.log(this.itemTemplateRef);

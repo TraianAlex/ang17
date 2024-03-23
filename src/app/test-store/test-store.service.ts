@@ -42,7 +42,6 @@ export class TestStoreService extends Store<TestStore> {
   limit$ = this.select((data: any) => data.results.limit);
 
   params$ = combineLatest([this.page$, this.limit$]).pipe(
-    distinctUntilChanged(),
     map(([page, limit]) => {
       const params: any = {
         limit: `${limit}`,
@@ -56,8 +55,7 @@ export class TestStoreService extends Store<TestStore> {
     switchMap((params) => {
       return this.http.get<any>(this.apiUrl, { params }).pipe(
         tap((results) => {
-          //this.setState(() => ({ results }));
-          console.log(results);
+          console.log('results', results);
         })
       );
     }),
