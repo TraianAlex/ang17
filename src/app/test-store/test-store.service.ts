@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, combineLatest, distinctUntilChanged, map, shareReplay, switchMap, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, map, shareReplay, switchMap, tap } from 'rxjs';
 import { Store } from '../shared/services/store/store';
 
 const LIMIT_LOW = 10;

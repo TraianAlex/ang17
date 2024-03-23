@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TestStoreService } from './test-store.service';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-test-store',
