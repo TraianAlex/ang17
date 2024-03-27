@@ -65,16 +65,13 @@ export class TestStoreService extends Store<TestStore> {
 
   products$ = this.productResponse$.pipe(map((data) => data.products));
 
-  //totalProducts$ = this.select((data: any) => data.results.total);
   totalProducts$ = this.productResponse$.pipe(map((data) => data.total));
 
   totalPages$ = combineLatest([this.totalProducts$, this.limit$]).pipe(
     map(([totalProducts, limit]) => Math.ceil(totalProducts / limit))
   );
 
-  //totalResults$ = this.select((data: any) => data.results.products.length);
   totalResults$ = this.productResponse$.pipe(map((data) => data.products.length));
-  //totalResults$ = this.state$.pipe(map((data) => data.results.products.length));
 
   movePageBy(moveBy: number) {
     const currentPage = this.state.results.skip;

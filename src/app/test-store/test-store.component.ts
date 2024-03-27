@@ -11,16 +11,11 @@ import { TestStoreService } from './test-store.service';
 })
 export class TestStoreComponent implements OnInit {
   testStoreService = inject(TestStoreService);
-  //products$ = this.testStoreService.select((state) => state.products);
   products$ = this.testStoreService.products$;
   totalPages$ = this.testStoreService.totalPages$;
   page$ = this.testStoreService.userPage$;
   totalResults$ = this.testStoreService.totalResults$;
   limit$ = this.testStoreService.limit$;
-
-  ngOnInit(): void {
-    //this.testStoreService.getProducts().subscribe();
-  }
 
   movePageBy(moveBy: number) {
     this.testStoreService.movePageBy(moveBy);
