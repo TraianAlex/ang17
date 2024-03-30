@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TestStoreService } from './test-store.service';
 
@@ -9,7 +9,7 @@ import { TestStoreService } from './test-store.service';
   templateUrl: './test-store.component.html',
   styleUrl: './test-store.component.scss',
 })
-export class TestStoreComponent implements OnInit {
+export class TestStoreComponent {
   testStoreService = inject(TestStoreService);
   products$ = this.testStoreService.products$;
   totalPages$ = this.testStoreService.totalPages$;
