@@ -12,7 +12,7 @@ import { Todo, TodosService } from './todos.service';
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.scss',
 })
-export class TodosComponent {
+export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
   todoService = inject(TodosService);
   todos$ = this.todoService.select((state) => state.todos);
