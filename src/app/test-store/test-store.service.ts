@@ -55,7 +55,7 @@ export class TestStoreService extends Store<TestStore> {
     switchMap((params) => {
       return this.http.get<any>(this.apiUrl, { params }).pipe(
         tap((results) => {
-          console.log('results', results);
+          //console.log('results', results);
         })
       );
     }),

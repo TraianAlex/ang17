@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { Todo, TodosService } from './todos.service';
 
@@ -15,10 +15,13 @@ import { Todo, TodosService } from './todos.service';
 export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
   todoService = inject(TodosService);
-  todos$ = this.todoService.select((state) => state.todos);
+  todos$ = this.todoService.todosWithAdd3$;
+
   todosCount$ = this.todos$.pipe(map((todos) => todos.length));
   todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed).length));
-  lastId = this.todoService.state.todos.length;
+
+  totalPages$ = this.todoService.totalPages$;
+  page$ = this.todoService.userPage$;
 
   addTodo(title: string) {
     if (!title) {
@@ -26,6 +29,10 @@ export class TodosComponent2 {
     }
     this.todoService.addTodo(title);
     this.todoInputRef.nativeElement.value = '';
+  }
+
+  movePageBy(moveBy: number) {
+    this.todoService.movePageBy(moveBy);
   }
 
   toggleComplete(todo: Todo): void {
