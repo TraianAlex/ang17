@@ -25,11 +25,7 @@
   <div>Total Products in Test Components {{ totalProducts$ | async }}</div>
 </div>
 
-<ul class="nav">
-  <li class="nav-item"><a class="nav-link" [routerLink]="['/test/todos']">TODOS</a></li>
-  <li class="nav-item"><a class="nav-link" [routerLink]="['/test/todos-reactive']">TODOS-reactive</a></li>
-  <li class="nav-item"><a class="nav-link" [routerLink]="['/test/selectors']">SELECTORS</a></li>
-</ul>
+<app-navigation></app-navigation>
 
 <div class="container-fluid">
   <router-outlet />

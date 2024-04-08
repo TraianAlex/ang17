@@ -7,11 +7,21 @@ import { CComponent } from './c-component/c-component.component';
 import { DComponent } from './d-component/d-component.component';
 import { EComponent } from './e-component/e-component.component';
 import { TodosComponent } from '../todos/todos.component';
+import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, NgComponentOutlet, CComponent, EComponent, TodosComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    NgComponentOutlet,
+    CComponent,
+    EComponent,
+    TodosComponent,
+    NavigationComponent,
+  ],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
 })

@@ -6,6 +6,7 @@ import { ReactiveComponent } from './reactive/reactive.component';
 import { TodosComponent } from './todos/todos.component';
 import { TestStoreComponent } from './test-store/test-store.component';
 import { TodosComponent2 } from './todos-reactive/todos.component';
+import { RxjsBasicComponent } from './rxjs-basic/rxjs-basic.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,11 @@ export const routes: Routes = [
     path: 'reactive',
     component: ReactiveComponent,
     loadChildren: () => import('./reactive/routes').then((mod) => mod.REACTIVE_ROUTES),
+  },
+  {
+    path: 'rxjs-basic',
+    component: RxjsBasicComponent,
+    loadChildren: () => import('./rxjs-basic/routes').then((mod) => mod.RXJS_BASIC),
   },
   {
     path: '**',
