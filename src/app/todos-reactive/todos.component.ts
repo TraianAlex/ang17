@@ -15,7 +15,7 @@ import { Todo, TodosService } from './todos.service';
 export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
   todoService = inject(TodosService);
-  todos$ = this.todoService.todosWithAdd3$;
+  todos$ = this.todoService.todosWithAdd4$;
 
   todosCount$ = this.todos$.pipe(map((todos) => todos.length));
   todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed).length));

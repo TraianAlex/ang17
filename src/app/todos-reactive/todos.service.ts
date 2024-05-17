@@ -91,7 +91,9 @@ export class TodosService extends Store<Todos> {
 
   todosResponse$ = this.params$.pipe(
     switchMap((params) =>
-      this.http.get<Todos>(`${this.apiUrl}/todos`, { params }).pipe(tap((todos) => console.log('todos', todos)))
+      this.http
+        .get<Todos>(`${this.apiUrl}/todos`, { params })
+        .pipe(tap((todos) => console.log('todosResponses', todos)))
     ),
     shareReplay(1),
     catchError(this.handleError)
@@ -130,7 +132,7 @@ export class TodosService extends Store<Todos> {
     //   }
     // }, [] as Todo[]),
     scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
-    tap((todos) => console.log('add', todos))
+    tap((todos) => console.log('todosWithAdd', todos))
   );
 
   // just adding the new values
@@ -147,7 +149,7 @@ export class TodosService extends Store<Todos> {
     }, [] as Todo[]),
     // scan((acc: Todo[], value: any) =>
     //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
-    tap((todos) => console.log('add2', todos))
+    tap((todos) => console.log('todosWithAdd2', todos))
   );
 
   // adding the new value at the bottom of the every page
@@ -161,15 +163,24 @@ export class TodosService extends Store<Todos> {
         return todos.todos;
       }
     }, [] as Todo[]),
-    tap((todos) => console.log('add3', todos))
+    tap((todos) => console.log('todosWithAdd3', todos))
   );
 
   // not working yet
   todosWithAdd4$ = combineLatest([this.todosResponse$, this.todoInsertedAction$]).pipe(
-    mergeMap((todo) => this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)),
+    //switchMap((todo) => this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)),
     // scan((acc: Todo[], value: any) =>
     //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
-    tap((todos) => console.log('add4', todos))
+    map(([todos, todo]) => {
+      if (todo instanceof Array) {
+        return [...todos.todos, ...todo];
+      } else if (todo) {
+        return [...todos.todos, todo];
+      } else {
+        return todos.todos;
+      }
+    }, [] as Todo[]),
+    tap((todos) => console.log('todosWithAdd4', todos))
   );
 
   addTodo(title: string) {
