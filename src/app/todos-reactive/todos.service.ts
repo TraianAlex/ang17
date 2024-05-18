@@ -8,15 +8,12 @@ import {
   debounceTime,
   map,
   merge,
-  mergeMap,
   scan,
   shareReplay,
-  startWith,
   switchMap,
   tap,
 } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Store } from '../shared/services/store/store';
 
 const LIMIT_LOW = 10;
 const LIMIT_MID = 25;
@@ -50,7 +47,7 @@ const initialState: Todos = {
 @Injectable({
   providedIn: 'root',
 })
-export class TodosService extends Store<Todos> {
+export class TodosService {
   http = inject(HttpClient);
   private apiUrl = 'https://dummyjson.com';
   httpOptions = {
@@ -59,9 +56,6 @@ export class TodosService extends Store<Todos> {
       'Access-Control-Allow-Origin': '*',
     },
   };
-  constructor() {
-    super(initialState);
-  }
 
   private todoInsertedSubject = new BehaviorSubject<Todo[] | null>(initialState.todos);
   private todoToggleSubject = new Subject<Todo>();
@@ -222,10 +216,10 @@ export class TodosService extends Store<Todos> {
 
   stopEditing(todo: Todo): void {
     const updatedTodo = { ...todo, editing: false };
-    this.setState(() => {
-      const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-      return { todos: updatedTodos };
-    });
+    // this.setState(() => {
+    //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
+    //   return { todos: updatedTodos };
+    // });
   }
 
   updateTodo(event: Event, todo: Todo): void {
@@ -233,27 +227,27 @@ export class TodosService extends Store<Todos> {
     const title = input.value.trim();
     if (title) {
       const updatedTodo = { ...todo, title, editing: false };
-      this.setState(() => {
-        const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-        return { todos: updatedTodos };
-      });
+      // this.setState(() => {
+      //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
+      //   return { todos: updatedTodos };
+      // });
     } else {
       this.removeTodo(todo);
     }
   }
 
   removeTodo(todo: Todo) {
-    this.setState(() => ({
-      todos: this.state.todos.filter((t) => t.id !== todo.id),
-    }));
+    // this.setState(() => ({
+    //   todos: this.state.todos.filter((t) => t.id !== todo.id),
+    // }));
   }
 
   clearCompleted(): void {
     // this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed)));
     // this.todosCount$ = this.todos$.pipe(map((todos) => todos.length));
-    this.setState(() => ({
-      todos: this.state.todos.filter((t) => t.completed === false),
-    }));
+    // this.setState(() => ({
+    //   todos: this.state.todos.filter((t) => t.completed === false),
+    // }));
   }
 
   private handleError(error: any): Observable<never> {
