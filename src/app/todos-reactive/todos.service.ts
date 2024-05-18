@@ -166,7 +166,7 @@ export class TodosService extends Store<Todos> {
     tap((todos) => console.log('todosWithAdd3', todos))
   );
 
-  // not working yet
+  // add the new value at the bottom of the page, pagination works
   todosWithAdd4$ = combineLatest([this.todosResponse$, this.todoInsertedAction$]).pipe(
     //switchMap((todo) => this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)),
     // scan((acc: Todo[], value: any) =>
@@ -187,35 +187,38 @@ export class TodosService extends Store<Todos> {
     this.todoInsertedSubject.next([{ todo: title.trim(), completed: false, userId: 1 }]);
   }
 
-  // todosWithToggle$ = merge(this.todosWithAdd$, this.todoToggleAction$).pipe(
-  //   scan((acc: Todo[], value: Todo | Todo[] | null) => {
-  //     if (value instanceof Array) {
-  //       return [...value];
-  //     } else if (value) {
-  //       return acc.map((t) => (t.id === value.id ? { ...t, completed: !t.completed } : t));
-  //     } else {
-  //       return acc;
-  //     }
-  //   }, [] as Todo[]),
-  //   tap((todos) => console.log('toggle', todos))
-  // );
+  // todo
+  todosWithToggle$ = merge(this.todosResponse$, this.todoToggleAction$).pipe(
+    // map(([todos, todo]: any) => {
+    //   if (todo instanceof Array) {
+    //     return [...todos.todos, ...todo];
+    //   } else if (todo) {
+    //     return [...todos.todos, todo];
+    //   } else {
+    //     return todos.todos;
+    //   }
+    // }, [] as Todo[]),
+    scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
+    tap((todos) => console.log('toggle', todos))
+  );
 
   toggleComplete(todo: Todo): void {
-    //const updatedTodo = { ...todo, completed: !todo.completed };
+    const updatedTodo = { ...todo, completed: !todo.completed };
     // this.setState(() => {
     //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
     //   return { todos: updatedTodos };
     // });
-    this.todoToggleSubject.next(todo);
+    this.todoToggleSubject.next(updatedTodo);
   }
 
-  editTodo(todo: Todo) {
+  editTodo$ = (todo: Todo) => {
     const updatedTodo = { ...todo, editing: true };
-    this.setState(() => {
-      const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-      return { todos: updatedTodos };
-    });
-  }
+    // this.setState(() => {
+    //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
+    //   return { todos: updatedTodos };
+    // });
+    this.todoToggleSubject.next(updatedTodo);
+  };
 
   stopEditing(todo: Todo): void {
     const updatedTodo = { ...todo, editing: false };

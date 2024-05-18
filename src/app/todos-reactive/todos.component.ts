@@ -16,6 +16,7 @@ export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
   todoService = inject(TodosService);
   todos$ = this.todoService.todosWithAdd4$;
+  //todos$ = this.todoService.todosWithToggle$;
 
   todosCount$ = this.todos$.pipe(map((todos) => todos.length));
   todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed).length));
@@ -40,7 +41,7 @@ export class TodosComponent2 {
   }
 
   editTodo(todo: Todo) {
-    this.todoService.editTodo(todo);
+    this.todoService.editTodo$(todo);
   }
 
   stopEditing(todo: Todo): void {
