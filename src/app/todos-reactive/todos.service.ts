@@ -146,23 +146,8 @@ export class TodosService {
     tap((todos) => console.log('todosWithAdd2', todos))
   );
 
-  // adding the new value at the bottom of the every page
-  todosWithAdd3$ = combineLatest([this.todosResponse$, this.todoInsertedAction$]).pipe(
-    map(([todos, todo]) => {
-      if (todo instanceof Array) {
-        return [...todos.todos, ...todo];
-      } else if (todo) {
-        return [...todos.todos, todo];
-      } else {
-        return todos.todos;
-      }
-    }, [] as Todo[]),
-    tap((todos) => console.log('todosWithAdd3', todos))
-  );
-
   // add the new value at the bottom of the page, pagination works
   todosWithAdd4$ = combineLatest([this.todosResponse$, this.todoInsertedAction$]).pipe(
-    //switchMap((todo) => this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)),
     // scan((acc: Todo[], value: any) =>
     //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
     map(([todos, todo]) => {
