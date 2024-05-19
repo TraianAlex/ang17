@@ -28,6 +28,7 @@ export interface Todo {
   completed: boolean;
   userId: number;
   editing?: boolean; // Optional property to track editing state
+  isDeleted?: boolean;
 }
 
 interface Todos {
@@ -95,13 +96,6 @@ export class TodosService {
 
   todos$ = this.todosResponse$.pipe(map((res) => res.todos));
 
-  // addTodo(todo: Todo): Observable<Todo> {
-  //   return this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions).pipe(
-  //     tap((todo) => console.log('add', todo)),
-  //     shareReplay(1)
-  //   );
-  // }
-
   movePageBy(moveBy: number) {
     const currentPage = this.pageBS.getValue();
     this.pageBS.next(currentPage + moveBy);
@@ -163,11 +157,21 @@ export class TodosService {
   );
 
   addTodo(title: string) {
-    this.todoInsertedSubject.next([{ todo: title.trim(), completed: false, userId: 1 }]);
+    const todo = { todo: title.trim(), completed: false, userId: 1 };
+    this.http
+      .post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)
+      .pipe(
+        tap((todo) => console.log('add', todo)),
+        shareReplay(1)
+      )
+      .subscribe((todo) => {
+        this.todoInsertedSubject.next([todo]);
+        console.log('add', todo);
+      });
   }
 
-  // todo
-  todosWithToggle$ = merge(this.todosResponse$, this.todoToggleAction$).pipe(
+  // add the other page in the bottom of the page ??
+  todosWithToggle$ = merge(this.todosWithAdd4$, this.todoToggleAction$).pipe(
     // map(([todos, todo]: any) => {
     //   if (todo instanceof Array) {
     //     return [...todos.todos, ...todo];
@@ -177,17 +181,23 @@ export class TodosService {
     //     return todos.todos;
     //   }
     // }, [] as Todo[]),
+    tap((todos) => console.log('toggle', todos)),
     scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
-    tap((todos) => console.log('toggle', todos))
   );
 
   toggleComplete(todo: Todo): void {
     const updatedTodo = { ...todo, completed: !todo.completed };
+    console.log('updatedTodo1', updatedTodo);
     // this.setState(() => {
     //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
     //   return { todos: updatedTodos };
     // });
-    this.todoToggleSubject.next(updatedTodo);
+    this.http
+      .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
+      .subscribe((todo) => {
+        this.todoToggleSubject.next(todo);
+        console.log('updatedTodo2', todo);
+      });
   }
 
   editTodo$ = (todo: Todo) => {
@@ -216,15 +226,39 @@ export class TodosService {
       //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
       //   return { todos: updatedTodos };
       // });
+      this.http
+        .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
+        .subscribe((todo) => {
+          this.todoToggleSubject.next(todo);
+        });
     } else {
       this.removeTodo(todo);
     }
   }
 
-  removeTodo(todo: Todo) {
+  // add the other page in the bottom of the page ??
+  todosWithRemove$ = merge(this.todosWithAdd4$, this.todoToggleAction$).pipe(
+    // map(([todos, todo]: any) => {
+    //   if (todo instanceof Array) {
+    //     return [...todos.todos, ...todo];
+    //   } else if (todo) {
+    //     return [...todos.todos, todo];
+    //   } else {
+    //     return todos.todos;
+    //   }
+    // }, [] as Todo[]),
+    tap((todos) => console.log('toggle', todos)),
+    scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
+  );
+
+  removeTodo(todoDel: Todo) {
     // this.setState(() => ({
     //   todos: this.state.todos.filter((t) => t.id !== todo.id),
     // }));
+    this.http.delete<Todo>(`${this.apiUrl}/todos/${todoDel.id}`).subscribe((todo) => {
+      this.todoToggleSubject.next(todo);
+      console.log('remove', todo);
+    });
   }
 
   clearCompleted(): void {
