@@ -15,12 +15,12 @@ import { Todo, TodosService } from './todos.service';
 export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
   todoService = inject(TodosService);
-  //todos$ = this.todoService.todosWithAdd4$;
+  todos$ = this.todoService.todosWithAdd$;
   //todos$ = this.todoService.todosWithToggle$;
-  todos$ = this.todoService.todosWithRemove$;
+  //todos$ = this.todoService.todosWithRemove$;
 
   todosCount$ = this.todos$.pipe(map((todos) => todos.length));
-  todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed).length));
+  todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo: { completed: any; }) => !todo.completed).length));
 
   totalPages$ = this.todoService.totalPages$;
   page$ = this.todoService.userPage$;

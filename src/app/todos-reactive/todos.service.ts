@@ -5,6 +5,7 @@ import {
   Subject,
   catchError,
   combineLatest,
+  concatMap,
   debounceTime,
   map,
   merge,
@@ -58,7 +59,8 @@ export class TodosService {
     },
   };
 
-  private todoInsertedSubject = new BehaviorSubject<Todo[] | null>(initialState.todos);
+  //private todoInsertedSubject = new BehaviorSubject<Todo[] | null>(initialState.todos);
+  private todoInsertedSubject = new Subject<Todo>();
   private todoToggleSubject = new Subject<Todo>();
   private limitBS = new BehaviorSubject<number>(DEFAULT_LIMIT);
   private pageBS = new BehaviorSubject<number>(DEFAULT_PAGE);
@@ -108,96 +110,88 @@ export class TodosService {
     tap((totalPages) => console.log('totalPages', totalPages))
   );
 
-  // adding teh values at the bottom of the page but pagination is broken
-  todosWithAdd$ = merge(this.todos$, this.todoInsertedAction$).pipe(
-    // scan((acc: Todo[], value: Todo[] | null) => {
-    //   if (value instanceof Array) {
-    //     return [...acc, ...value];
-    //   } else if (value) {
-    //     return [...acc, value];
-    //   } else {
-    //     return acc;
-    //   }
-    // }, [] as Todo[]),
-    scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
-    tap((todos) => console.log('todosWithAdd', todos))
-  );
-
   // just adding the new values
-  todosWithAdd2$ = this.todoInsertedAction$.pipe(
-    //switchMap((todo) => this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)),
-    scan((acc: Todo[], value: Todo[] | null) => {
-      if (value instanceof Array) {
-        return [...acc, ...value];
-      } else if (value) {
-        return [...acc, value];
-      } else {
-        return acc;
-      }
-    }, [] as Todo[]),
-    // scan((acc: Todo[], value: any) =>
-    //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
-    tap((todos) => console.log('todosWithAdd2', todos))
-  );
+  // todosWithAdd2$ = this.todoInsertedAction$.pipe(
+  //   //switchMap((todo) => this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)),
+  //   scan((acc: Todo[], value: Todo[] | null) => {
+  //     if (value instanceof Array) {
+  //       return [...acc, ...value];
+  //     } else if (value) {
+  //       return [...acc, value];
+  //     } else {
+  //       return acc;
+  //     }
+  //   }, [] as Todo[]),
+  //   // scan((acc: Todo[], value: any) =>
+  //   //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
+  //   tap((todos) => console.log('todosWithAdd2', todos))
+  // );
 
   // add the new value at the bottom of the page, pagination works
-  todosWithAdd4$ = combineLatest([this.todosResponse$, this.todoInsertedAction$]).pipe(
-    // scan((acc: Todo[], value: any) =>
-    //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
-    map(([todos, todo]) => {
-      if (todo instanceof Array) {
-        return [...todos.todos, ...todo];
-      } else if (todo) {
-        return [...todos.todos, todo];
-      } else {
-        return todos.todos;
-      }
-    }, [] as Todo[]),
-    tap((todos) => console.log('todosWithAdd4', todos))
-  );
+  // todosWithAdd4$ = combineLatest([this.todosResponse$, this.todoInsertedAction$]).pipe(
+  //   // scan((acc: Todo[], value: any) =>
+  //   //   (value instanceof Array) ? [...acc, ...value] : [...acc, value], [] as Todo[]),
+  //   map(([todos, todo]) => {
+  //     if (todo instanceof Array) {
+  //       return [...todos.todos, ...todo];
+  //     } else if (todo) {
+  //       return [...todos.todos, todo];
+  //     } else {
+  //       return todos.todos;
+  //     }
+  //   }, [] as Todo[]),
+  //   tap((todos) => console.log('todosWithAdd4', todos))
+  // );
 
-  addTodo(title: string) {
+  // addTodo(title: string) {
+  //   const todo = { todo: title.trim(), completed: false, userId: 1 };
+  //   this.http
+  //     .post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)
+  //     .pipe(
+  //       tap((todo) => console.log('add', todo)),
+  //       shareReplay(1)
+  //     )
+  //     .subscribe((todo) => {
+  //       this.todoInsertedSubject.next([todo]);
+  //       console.log('add', todo);
+  //     });
+  // }
+
+  // add the new value at the bottom of the page, pagination works
+  todosWithAdd$ = merge(
+    this.todosResponse$.pipe(map((res) => res.todos)),
+    this.todoInsertedAction$.pipe(
+      concatMap((todo) => {
+        return this.http.post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions).pipe(
+          map((todo) => todo),
+          catchError(this.handleError)
+        );
+      })
+    )
+  ).pipe(scan((acc: any, value: any) => (value instanceof Array ? [...value] : [...acc, value]), [] as Todo[]));
+
+  addTodo(title: string): void {
     const todo = { todo: title.trim(), completed: false, userId: 1 };
-    this.http
-      .post<Todo>(`${this.apiUrl}/todos/add`, JSON.stringify(todo), this.httpOptions)
-      .pipe(
-        tap((todo) => console.log('add', todo)),
-        shareReplay(1)
-      )
-      .subscribe((todo) => {
-        this.todoInsertedSubject.next([todo]);
-        console.log('add', todo);
-      });
+    this.todoInsertedSubject.next(todo);
   }
 
-  // add the other page in the bottom of the page ??
-  todosWithToggle$ = merge(this.todosWithAdd4$, this.todoToggleAction$).pipe(
-    // map(([todos, todo]: any) => {
-    //   if (todo instanceof Array) {
-    //     return [...todos.todos, ...todo];
-    //   } else if (todo) {
-    //     return [...todos.todos, todo];
-    //   } else {
-    //     return todos.todos;
-    //   }
-    // }, [] as Todo[]),
+  todosWithToggle$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoToggleAction$).pipe(
     tap((todos) => console.log('toggle', todos)),
-    scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
+    scan(
+      (acc: Todo[], value: any) =>
+        value instanceof Array ? [...value] : acc.map((todo) => (todo.id === value.id ? value : todo)),
+      [] as Todo[]
+    )
   );
 
-  toggleComplete(todo: Todo): void {
+  toggleComplete(todo: Todo) {
     const updatedTodo = { ...todo, completed: !todo.completed };
-    console.log('updatedTodo1', updatedTodo);
-    // this.setState(() => {
-    //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-    //   return { todos: updatedTodos };
-    // });
-    this.http
-      .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
-      .subscribe((todo) => {
-        this.todoToggleSubject.next(todo);
-        console.log('updatedTodo2', todo);
-      });
+    // return this.http.put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions).pipe(
+    //   tap((todo) => console.log('updatedTodo2', todo)),
+    //   map((todo) => {
+    this.todoToggleSubject.next(updatedTodo);
+    //   })
+    // );
   }
 
   editTodo$ = (todo: Todo) => {
@@ -222,43 +216,29 @@ export class TodosService {
     const title = input.value.trim();
     if (title) {
       const updatedTodo = { ...todo, title, editing: false };
-      // this.setState(() => {
-      //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-      //   return { todos: updatedTodos };
-      // });
-      this.http
-        .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
-        .subscribe((todo) => {
-          this.todoToggleSubject.next(todo);
-        });
-    } else {
-      this.removeTodo(todo);
+      // this.http
+      //   .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
+      //   .subscribe((todo) => {
+      this.todoToggleSubject.next(updatedTodo);
+      //     });
+      // } else {
+      //   this.removeTodo(todo);
     }
   }
 
-  // add the other page in the bottom of the page ??
-  todosWithRemove$ = merge(this.todosWithAdd4$, this.todoToggleAction$).pipe(
-    // map(([todos, todo]: any) => {
-    //   if (todo instanceof Array) {
-    //     return [...todos.todos, ...todo];
-    //   } else if (todo) {
-    //     return [...todos.todos, todo];
-    //   } else {
-    //     return todos.todos;
-    //   }
-    // }, [] as Todo[]),
-    tap((todos) => console.log('toggle', todos)),
-    scan((acc: Todo[], value: any) => (value instanceof Array ? [...acc, ...value] : [...acc, value]), [] as Todo[]),
+  todosWithRemove$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoToggleAction$).pipe(
+    tap((todos) => console.log('remove', todos)),
+    scan(
+      (acc: Todo[], value: any) => (value instanceof Array ? [...value] : acc.filter((todo) => todo.id !== value.id)),
+      [] as Todo[]
+    )
   );
 
   removeTodo(todoDel: Todo) {
-    // this.setState(() => ({
-    //   todos: this.state.todos.filter((t) => t.id !== todo.id),
-    // }));
-    this.http.delete<Todo>(`${this.apiUrl}/todos/${todoDel.id}`).subscribe((todo) => {
-      this.todoToggleSubject.next(todo);
-      console.log('remove', todo);
-    });
+    // this.http.delete<Todo>(`${this.apiUrl}/todos/${todoDel.id}`).subscribe((todo) => {
+    this.todoToggleSubject.next(todoDel);
+    //  console.log('remove', todo);
+    // });
   }
 
   clearCompleted(): void {
