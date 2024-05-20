@@ -54,7 +54,7 @@
     <span class="todo-count"
       ><strong>{{ todosLeft$ | async }} of {{ todosCount$ | async }}</strong> item(s) left</span
     >
-    <button class="clear-completed" (click)="clearCompleted()">Clear completed</button>
+    <button class="clear-completed" (click)="clearCompleted(todos$)">Clear completed</button>
     <div class="buttons">
       <button class="prev" (click)="movePageBy(-1)" [disabled]="(page$ | async) === 1">Prev</button>
       <button class="next" (click)="movePageBy(1)" [disabled]="(totalPages$ | async) === (page$ | async)">Next</button>

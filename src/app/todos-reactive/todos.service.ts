@@ -62,9 +62,10 @@ export class TodosService {
   //private todoInsertedSubject = new BehaviorSubject<Todo[] | null>(initialState.todos);
   private todoInsertedSubject = new Subject<Todo>();
   private todoToggleSubject = new Subject<Todo>();
- // private todoEditSubject = new Subject<Todo>();
- // private todoStopEditSubject = new Subject<Todo>();
- // private todoUpdateSubject = new Subject<Todo>();
+  // private todoEditSubject = new Subject<Todo>();
+  // private todoStopEditSubject = new Subject<Todo>();
+  // private todoUpdateSubject = new Subject<Todo>();
+  // private todoClearCompleteSubject = new Subject<Todo>();
   private limitBS = new BehaviorSubject<number>(DEFAULT_LIMIT);
   private pageBS = new BehaviorSubject<number>(DEFAULT_PAGE);
 
@@ -73,6 +74,7 @@ export class TodosService {
   //todoEditAction$ = this.todoEditSubject.asObservable();
   //todoStopEditAction$ = this.todoStopEditSubject.asObservable();
   //todoUpdateAction$ = this.todoUpdateSubject.asObservable();
+  // todoClearCompleteAction$ = this.todoClearCompleteSubject.asObservable();
   limit$ = this.limitBS.asObservable();
   userPage$ = this.pageBS.pipe(map((page) => page + 1));
 
@@ -281,13 +283,25 @@ export class TodosService {
     // });
   }
 
-  clearCompleted(): void {
-    this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed)));
-    // this.todosCount$ = this.todos$.pipe(map((todos) => todos.length));
-    // this.setState(() => ({
-    //   todos: this.state.todos.filter((t) => t.completed === false),
-    // }));
-  }
+  // todosWithClearComplete$ = merge(
+  //   this.todosResponse$.pipe(map((res) => res.todos)),
+  //   this.todoClearCompleteAction$
+  // ).pipe(
+  //   tap((todos) => console.log('clear complete', todos)),
+  //   scan(
+  //     (acc: Todo[], value: any) => (value instanceof Array ? [...value] : acc.filter((todo) => !todo.completed)),
+  //     [] as Todo[]
+  //   )
+  // );
+
+  // clearCompleted(todos: any): void {
+  //   // this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed)));
+  //   // this.todosCount$ = this.todos$.pipe(map((todos) => todos.length));
+  //   // this.setState(() => ({
+  //   //   todos: this.state.todos.filter((t) => t.completed === false),
+  //   // }));
+  //   this.todoClearCompleteSubject.next(todos);
+  // }
 
   private handleError(error: any): Observable<never> {
     // Handle the error here

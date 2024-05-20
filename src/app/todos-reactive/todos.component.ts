@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { map, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 import { Todo, TodosService } from './todos.service';
 
@@ -20,7 +20,7 @@ export class TodosComponent2 {
   //todos$ = this.todoService.todosWithRemove$;
 
   todosCount$ = this.todos$.pipe(map((todos) => todos.length));
-  todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo: { completed: any; }) => !todo.completed).length));
+  todosLeft$ = this.todos$.pipe(map((todos) => todos.filter((todo: { completed: any }) => !todo.completed).length));
 
   totalPages$ = this.todoService.totalPages$;
   page$ = this.todoService.userPage$;
@@ -56,8 +56,8 @@ export class TodosComponent2 {
   }
 
   updateTodo(event: Event, todo: Todo): void {
-   // this.todos$ = this.todoService.todosWithUpdate$;
-   this.todos$ = this.todoService.todosWithToggle$;
+    // this.todos$ = this.todoService.todosWithUpdate$;
+    this.todos$ = this.todoService.todosWithToggle$;
     if (!todo.editing) {
       return;
     }
@@ -69,9 +69,10 @@ export class TodosComponent2 {
     this.todoService.removeTodo(todo);
   }
 
-  clearCompleted(): void {
-    // this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed)));
-    // this.todosCount$ = this.todos$.pipe(map((todos) => todos.length));
-    this.todoService.clearCompleted();
+  clearCompleted(todos: Observable<Todo>): void {
+    //this.todos$ = this.todoService.todosWithClearComplete$;
+    this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo: { completed: boolean }) => !todo.completed)));
+    this.todosCount$ = this.todos$.pipe(map((todos) => todos.length));
+    //this.todoService.clearCompleted(todos);
   }
 }
