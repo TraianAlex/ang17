@@ -26,6 +26,7 @@ export class TodosComponent2 {
   page$ = this.todoService.userPage$;
 
   addTodo(title: string) {
+    this.todos$ = this.todoService.todosWithAdd$;
     if (!title) {
       return;
     }
@@ -38,18 +39,25 @@ export class TodosComponent2 {
   }
 
   toggleComplete(todo: Todo): void {
+    this.todos$ = this.todoService.todosWithToggle$;
     this.todoService.toggleComplete(todo);
   }
 
   editTodo(todo: Todo) {
+    //this.todos$ = this.todoService.todosWithEdit$;
+    this.todos$ = this.todoService.todosWithToggle$;
     this.todoService.editTodo$(todo);
   }
 
   stopEditing(todo: Todo): void {
+    //this.todos$ = this.todoService.todosWithStopEditing$;
+    this.todos$ = this.todoService.todosWithToggle$;
     this.todoService.stopEditing(todo);
   }
 
   updateTodo(event: Event, todo: Todo): void {
+   // this.todos$ = this.todoService.todosWithUpdate$;
+   this.todos$ = this.todoService.todosWithToggle$;
     if (!todo.editing) {
       return;
     }
@@ -57,6 +65,7 @@ export class TodosComponent2 {
   }
 
   removeTodo(todo: Todo) {
+    this.todos$ = this.todoService.todosWithRemove$;
     this.todoService.removeTodo(todo);
   }
 

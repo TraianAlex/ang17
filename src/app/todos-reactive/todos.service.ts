@@ -62,11 +62,17 @@ export class TodosService {
   //private todoInsertedSubject = new BehaviorSubject<Todo[] | null>(initialState.todos);
   private todoInsertedSubject = new Subject<Todo>();
   private todoToggleSubject = new Subject<Todo>();
+ // private todoEditSubject = new Subject<Todo>();
+ // private todoStopEditSubject = new Subject<Todo>();
+ // private todoUpdateSubject = new Subject<Todo>();
   private limitBS = new BehaviorSubject<number>(DEFAULT_LIMIT);
   private pageBS = new BehaviorSubject<number>(DEFAULT_PAGE);
 
   todoInsertedAction$ = this.todoInsertedSubject.asObservable();
   todoToggleAction$ = this.todoToggleSubject.asObservable();
+  //todoEditAction$ = this.todoEditSubject.asObservable();
+  //todoStopEditAction$ = this.todoStopEditSubject.asObservable();
+  //todoUpdateAction$ = this.todoUpdateSubject.asObservable();
   limit$ = this.limitBS.asObservable();
   userPage$ = this.pageBS.pipe(map((page) => page + 1));
 
@@ -179,7 +185,9 @@ export class TodosService {
     tap((todos) => console.log('toggle', todos)),
     scan(
       (acc: Todo[], value: any) =>
-        value instanceof Array ? [...value] : acc.map((todo) => (todo.id === value.id ? value : todo)),
+        value instanceof Array
+          ? [...value]
+          : acc.map((todo) => (todo.id === value.id ? { ...value, completed: !value.completed } : todo)),
       [] as Todo[]
     )
   );
@@ -194,31 +202,63 @@ export class TodosService {
     // );
   }
 
+  // todosWithEdit$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoEditAction$).pipe(
+  //   tap((todos) => console.log('editing', todos)),
+  //   scan(
+  //     (acc: Todo[], value: any) =>
+  //       value instanceof Array
+  //         ? [...value]
+  //         : acc.map((todo) => (todo.id === value.id ? value : todo)),
+  //     [] as Todo[]
+  //   )
+  // );
+
   editTodo$ = (todo: Todo) => {
     const updatedTodo = { ...todo, editing: true };
-    // this.setState(() => {
-    //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-    //   return { todos: updatedTodos };
-    // });
+    //this.todoEditSubject.next(updatedTodo);
     this.todoToggleSubject.next(updatedTodo);
   };
 
+  // todosWithStopEditing$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoStopEditAction$).pipe(
+  //   tap((todos) => console.log('stop editing', todos)),
+  //   scan(
+  //     (acc: Todo[], value: any) =>
+  //       value instanceof Array
+  //         ? [...value]
+  //         : acc.map((todo) => (todo.id === value.id ? value : todo)),
+  //     [] as Todo[]
+  //   )
+  // );
+
   stopEditing(todo: Todo): void {
     const updatedTodo = { ...todo, editing: false };
-    // this.setState(() => {
-    //   const updatedTodos = this.state.todos.map((t) => (t.id === todo.id ? updatedTodo : t));
-    //   return { todos: updatedTodos };
-    // });
+    //this.todoStopEditSubject.next(updatedTodo);
+    this.todoToggleSubject.next(updatedTodo);
   }
+
+  // todosWithUpdate$ = merge(
+  //   this.todosResponse$.pipe(map((res) => res.todos)),
+  //   this.todoUpdateAction$.pipe(tap((todo) => console.log('update action', todo)))
+  // ).pipe(
+  //   tap((todos) => console.log('update', todos)),
+  //   scan((acc: Todo[], value: any) => {
+  //     console.log('value updated', value);
+  //     return (
+  //       value instanceof Array ? [...value] : acc.map((todo) => (todo.id === value.id ? value : todo)), [] as Todo[]
+  //     );
+  //   })
+  // );
 
   updateTodo(event: Event, todo: Todo): void {
     const input = event.target as HTMLInputElement; // Cast to HTMLInputElement
     const title = input.value.trim();
     if (title) {
       const updatedTodo = { ...todo, title, editing: false };
+      console.log('update event', updatedTodo);
       // this.http
       //   .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
       //   .subscribe((todo) => {
+      //this.todoUpdateSubject.next(updatedTodo);
       this.todoToggleSubject.next(updatedTodo);
       //     });
       // } else {
@@ -242,7 +282,7 @@ export class TodosService {
   }
 
   clearCompleted(): void {
-    // this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed)));
+    this.todos$ = this.todos$.pipe(map((todos) => todos.filter((todo) => !todo.completed)));
     // this.todosCount$ = this.todos$.pipe(map((todos) => todos.length));
     // this.setState(() => ({
     //   todos: this.state.todos.filter((t) => t.completed === false),
