@@ -7,6 +7,7 @@ import { TodosComponent } from './todos/todos.component';
 import { TestStoreComponent } from './test-store/test-store.component';
 import { TodosComponent2 } from './todos-reactive/todos.component';
 import { RxjsBasicComponent } from './rxjs-basic/rxjs-basic.component';
+import { TodosBasicComponent } from './todos-basic/todos.component';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,7 @@ export const routes: Routes = [
     component: TestComponent,
     children: [
       { path: 'todos', component: TodosComponent },
+      { path: 'todos-basic', component: TodosBasicComponent },
       { path: 'todos-reactive', component: TodosComponent2 },
       { path: 'selectors', component: TestStoreComponent },
     ],

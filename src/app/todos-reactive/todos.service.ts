@@ -9,6 +9,7 @@ import {
   debounceTime,
   map,
   merge,
+  mergeScan,
   scan,
   shareReplay,
   switchMap,
@@ -164,6 +165,11 @@ export class TodosService {
   //       console.log('add', todo);
   //     });
   // }
+
+  // todosWithAdd2$ = this.todosResponse$.pipe(map((res) => res.todos)).pipe(
+  //   mergeScan((acc: Todo[], value: any) => (value instanceof Array ? [...value] : [...acc, value]), [] as Todo[]),
+  //   tap((todos) => console.log('todosWithAdd2', todos))
+  // );
 
   // add the new value at the bottom of the page, pagination works
   todosWithAdd$ = merge(
