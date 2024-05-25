@@ -16,7 +16,7 @@ export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
   todoService = inject(TodosService);
   todos$ = this.todoService.todosWithAdd$;
-  //todos$ = this.todoService.todosWithToggle$;
+  //todos$ = this.todoService.todosWithUpdate$;
   //todos$ = this.todoService.todosWithRemove$;
 
   todosCount$ = this.todos$.pipe(map((todos) => todos.length));
@@ -39,25 +39,25 @@ export class TodosComponent2 {
   }
 
   toggleComplete(todo: Todo): void {
-    this.todos$ = this.todoService.todosWithToggle$;
+    this.todos$ = this.todoService.todosWithUpdate$;
     this.todoService.toggleComplete(todo);
   }
 
   editTodo(todo: Todo) {
     //this.todos$ = this.todoService.todosWithEdit$;
-    this.todos$ = this.todoService.todosWithToggle$;
+    this.todos$ = this.todoService.todosWithUpdate$;
     this.todoService.editTodo$(todo);
   }
 
   stopEditing(todo: Todo): void {
     //this.todos$ = this.todoService.todosWithStopEditing$;
-    this.todos$ = this.todoService.todosWithToggle$;
+    this.todos$ = this.todoService.todosWithUpdate$;
     this.todoService.stopEditing(todo);
   }
 
   updateTodo(event: Event, todo: Todo): void {
     // this.todos$ = this.todoService.todosWithUpdate$;
-    this.todos$ = this.todoService.todosWithToggle$;
+    this.todos$ = this.todoService.todosWithUpdate$;
     if (!todo.editing) {
       return;
     }

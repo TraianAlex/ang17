@@ -62,7 +62,7 @@ export class TodosService {
 
   //private todoInsertedSubject = new BehaviorSubject<Todo[] | null>(initialState.todos);
   private todoInsertedSubject = new Subject<Todo>();
-  private todoToggleSubject = new Subject<Todo>();
+  private todoUpdateSubject = new Subject<Todo>();
   // private todoEditSubject = new Subject<Todo>();
   // private todoStopEditSubject = new Subject<Todo>();
   // private todoUpdateSubject = new Subject<Todo>();
@@ -71,7 +71,7 @@ export class TodosService {
   private pageBS = new BehaviorSubject<number>(DEFAULT_PAGE);
 
   todoInsertedAction$ = this.todoInsertedSubject.asObservable();
-  todoToggleAction$ = this.todoToggleSubject.asObservable();
+  todoUpdateAction$ = this.todoUpdateSubject.asObservable();
   //todoEditAction$ = this.todoEditSubject.asObservable();
   //todoStopEditAction$ = this.todoStopEditSubject.asObservable();
   //todoUpdateAction$ = this.todoUpdateSubject.asObservable();
@@ -189,7 +189,7 @@ export class TodosService {
     this.todoInsertedSubject.next(todo);
   }
 
-  todosWithToggle$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoToggleAction$).pipe(
+  todosWithUpdate$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoUpdateAction$).pipe(
     tap((todos) => console.log('toggle', todos)),
     scan(
       (acc: Todo[], value: any) =>
@@ -205,7 +205,7 @@ export class TodosService {
     // return this.http.put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions).pipe(
     //   tap((todo) => console.log('updatedTodo2', todo)),
     //   map((todo) => {
-    this.todoToggleSubject.next(updatedTodo);
+    this.todoUpdateSubject.next(updatedTodo);
     //   })
     // );
   }
@@ -224,7 +224,7 @@ export class TodosService {
   editTodo$ = (todo: Todo) => {
     const updatedTodo = { ...todo, editing: true };
     //this.todoEditSubject.next(updatedTodo);
-    this.todoToggleSubject.next(updatedTodo);
+    this.todoUpdateSubject.next(updatedTodo);
   };
 
   // todosWithStopEditing$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoStopEditAction$).pipe(
@@ -241,7 +241,7 @@ export class TodosService {
   stopEditing(todo: Todo): void {
     const updatedTodo = { ...todo, editing: false };
     //this.todoStopEditSubject.next(updatedTodo);
-    this.todoToggleSubject.next(updatedTodo);
+    this.todoUpdateSubject.next(updatedTodo);
   }
 
   // todosWithUpdate$ = merge(
@@ -267,14 +267,14 @@ export class TodosService {
       //   .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
       //   .subscribe((todo) => {
       //this.todoUpdateSubject.next(updatedTodo);
-      this.todoToggleSubject.next(updatedTodo);
+      this.todoUpdateSubject.next(updatedTodo);
       //     });
       // } else {
       //   this.removeTodo(todo);
     }
   }
 
-  todosWithRemove$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoToggleAction$).pipe(
+  todosWithRemove$ = merge(this.todosResponse$.pipe(map((res) => res.todos)), this.todoUpdateAction$).pipe(
     tap((todos) => console.log('remove', todos)),
     scan(
       (acc: Todo[], value: any) => (value instanceof Array ? [...value] : acc.filter((todo) => todo.id !== value.id)),
@@ -284,7 +284,7 @@ export class TodosService {
 
   removeTodo(todoDel: Todo) {
     // this.http.delete<Todo>(`${this.apiUrl}/todos/${todoDel.id}`).subscribe((todo) => {
-    this.todoToggleSubject.next(todoDel);
+    this.todoUpdateSubject.next(todoDel);
     //  console.log('remove', todo);
     // });
   }
