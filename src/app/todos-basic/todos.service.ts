@@ -33,8 +33,9 @@ export class TodosService {
 
   addTodo(title: string) {
     this.lastId = this.lastId + 1;
+    const newTodo = { id: this.lastId, title: title.trim(), completed: false };
     this.todosSubject.next({
-      todos: [...this.todosSubject.getValue().todos, { id: this.lastId, title: title.trim(), completed: false }],
+      todos: [...this.todosSubject.getValue().todos, newTodo],
     });
   }
 
