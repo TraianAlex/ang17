@@ -351,8 +351,6 @@ export abstract class Store<T> {
     }
   }
 
-  https://gitlab.com/opusonesolutions/zeus/model-manager/model-manager-frontend/-/merge_requests/55
-
   **** Others ****
 
   State is only changed in a controllable way
