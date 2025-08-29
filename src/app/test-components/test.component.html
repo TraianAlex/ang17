@@ -21,11 +21,11 @@
 
   <!-- <ng-container *ngTemplateOutlet="template; context: { item: item }"></ng-container> -->
 
-  <app-e-component [item]="item"></app-e-component>
+  <app-e-component [item]="item" />
   <div>Total Products in Test Components {{ totalProducts$ | async }}</div>
 </div>
 
-<app-navigation></app-navigation>
+<app-navigation />
 
 <div class="container-fluid">
   <router-outlet />

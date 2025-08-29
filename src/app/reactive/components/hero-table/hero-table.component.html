@@ -46,9 +46,8 @@
     </div>
     <div class="table-content">
       @for (hero of vm.heroes; track hero) {
-        <rx-hero-badge
-          [hero]="hero"
-        ></rx-hero-badge>
+        <rx-hero-badge [hero]="hero"
+         />
       }
     </div>
   }

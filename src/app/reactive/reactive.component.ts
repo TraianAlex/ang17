@@ -10,10 +10,10 @@ import { FooterComponent } from './components/footer/footer.component';
     imports: [RouterOutlet, HeaderComponent, FooterComponent],
     standalone: true,
     template: `
-    <rx-header></rx-header>
+    <rx-header />
     <!-- <rx-content></rx-content> -->
     <router-outlet />
-    <rx-footer></rx-footer>
+    <rx-footer />
   `,
     styleUrls: ['./reactive.component.scss']
 })
