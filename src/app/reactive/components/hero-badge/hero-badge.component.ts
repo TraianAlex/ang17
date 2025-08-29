@@ -17,10 +17,10 @@ export const Sizes = {
 };
 
 @Component({
-  selector: 'rx-hero-badge',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+    selector: 'rx-hero-badge',
+    imports: [CommonModule],
+    standalone: true,
+    template: `
     <ng-container *ngIf="hero">
       <div>
         <img
@@ -39,8 +39,8 @@ export const Sizes = {
       </div>
     </ng-container>
   `,
-  styles: [
-    `
+    styles: [
+        `
       :host {
         display: flex;
         flex-direction: column;
@@ -59,10 +59,10 @@ export const Sizes = {
         transform: scale(1.05);
       }
     `,
-  ],
-  host: {
-    '[class.loaded]': 'loaded',
-  },
+    ],
+    host: {
+        '[class.loaded]': 'loaded',
+    }
 })
 export class HeroBadgeComponent implements OnInit {
   @Input() hero: Hero | null = null;

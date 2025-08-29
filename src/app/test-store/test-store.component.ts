@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { TestStoreService } from './test-store.service';
 
 @Component({
-  selector: 'app-test-store',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './test-store.component.html',
-  styleUrl: './test-store.component.scss',
+    selector: 'app-test-store',
+    imports: [CommonModule],
+    standalone: true,
+    templateUrl: './test-store.component.html',
+    styleUrl: './test-store.component.scss'
 })
 export class TestStoreComponent {
   testStoreService = inject(TestStoreService);

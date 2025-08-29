@@ -6,11 +6,11 @@ import { DEFAULT_PAGE, Hero, HeroService } from '../../services/hero.service';
 import { HeroBadgeComponent } from '../hero-badge/hero-badge.component';
 
 @Component({
-  selector: 'rx-hero-table',
-  standalone: true,
-  imports: [CommonModule, HeroBadgeComponent],
-  templateUrl: './hero-table.component.html',
-  styleUrls: ['./hero-table.component.scss'],
+    selector: 'rx-hero-table',
+    imports: [CommonModule, HeroBadgeComponent],
+    standalone: true,
+    templateUrl: './hero-table.component.html',
+    styleUrls: ['./hero-table.component.scss']
 })
 export class HeroTableComponent implements OnDestroy {
   hero = inject(HeroService);

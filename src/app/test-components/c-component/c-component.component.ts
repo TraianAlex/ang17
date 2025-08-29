@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-c-component',
-  standalone: true,
-  imports: [],
-  templateUrl: './c-component.component.html',
-  styleUrl: './c-component.component.scss',
+    selector: 'app-c-component',
+    imports: [],
+    standalone: true,
+    templateUrl: './c-component.component.html',
+    styleUrl: './c-component.component.scss'
 })
 export class CComponent {
   @Input() propC1!: string;

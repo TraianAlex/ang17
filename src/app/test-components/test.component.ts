@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ContentChild, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import { NgComponentOutlet, CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
+
 import { TestStoreService } from '../test-store/test-store.service';
 import { TestService } from './test.service';
 import { CComponent } from './c-component/c-component.component';
@@ -10,20 +11,17 @@ import { TodosComponent } from '../todos/todos.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
-  selector: 'app-test',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    RouterLink,
-    NgComponentOutlet,
-    CComponent,
-    EComponent,
-    TodosComponent,
-    NavigationComponent,
-  ],
-  templateUrl: './test.component.html',
-  styleUrl: './test.component.scss',
+    selector: 'app-test',
+    imports: [
+        CommonModule,
+        RouterOutlet,
+        NgComponentOutlet,
+        EComponent,
+        NavigationComponent,
+    ],
+    standalone: true,
+    templateUrl: './test.component.html',
+    styleUrl: './test.component.scss'
 })
 export class TestComponent implements OnInit, AfterViewInit {
   testStoreService = inject(TestStoreService);

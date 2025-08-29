@@ -6,11 +6,11 @@ import { Observable, map, tap } from 'rxjs';
 import { Todo, TodosService } from './todos.service';
 
 @Component({
-  selector: 'app-todos',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './todos.component.html',
-  styleUrl: './todos.component.scss',
+    selector: 'app-todos',
+    imports: [CommonModule, FormsModule],
+    standalone: true,
+    templateUrl: './todos.component.html',
+    styleUrl: './todos.component.scss'
 })
 export class TodosComponent2 {
   @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;

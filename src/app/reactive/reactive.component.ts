@@ -6,15 +6,15 @@ import { ContentComponent } from './components/content/content.component';
 import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
-  selector: 'rx-root',
-  standalone: true,
-  imports: [RouterOutlet, HeaderComponent, ContentComponent, FooterComponent],
-  template: `
+    selector: 'rx-root',
+    imports: [RouterOutlet, HeaderComponent, FooterComponent],
+    standalone: true,
+    template: `
     <rx-header></rx-header>
     <!-- <rx-content></rx-content> -->
     <router-outlet />
     <rx-footer></rx-footer>
   `,
-  styleUrls: ['./reactive.component.scss'],
+    styleUrls: ['./reactive.component.scss']
 })
 export class ReactiveComponent {}
