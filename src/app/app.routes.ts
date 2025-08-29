@@ -1,37 +1,37 @@
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './home/home.component';
-import { TestComponent } from './test-components/test.component';
-import { ReactiveComponent } from './reactive/reactive.component';
-import { TodosComponent } from './todos/todos.component';
-import { TestStoreComponent } from './test-store/test-store.component';
-import { TodosComponent2 } from './todos-reactive/todos.component';
-import { RxjsBasicComponent } from './rxjs-basic/rxjs-basic.component';
-import { TodosBasicComponent } from './todos-basic/todos.component';
-
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    loadComponent: () => import('./home/home.component').then((m) => m.HomeComponent),
   },
   {
     path: 'test',
-    component: TestComponent,
+    loadComponent: () => import('./test-components/test.component').then((m) => m.TestComponent),
     children: [
-      { path: 'todos', component: TodosComponent },
-      { path: 'todos-basic', component: TodosBasicComponent },
-      { path: 'todos-reactive', component: TodosComponent2 },
-      { path: 'selectors', component: TestStoreComponent },
+      { path: 'todos', loadComponent: () => import('./todos/todos.component').then((m) => m.TodosComponent) },
+      {
+        path: 'todos-basic',
+        loadComponent: () => import('./todos-basic/todos.component').then((m) => m.TodosBasicComponent),
+      },
+      {
+        path: 'todos-reactive',
+        loadComponent: () => import('./todos-reactive/todos.component').then((m) => m.TodosComponent2),
+      },
+      {
+        path: 'selectors',
+        loadComponent: () => import('./test-store/test-store.component').then((m) => m.TestStoreComponent),
+      },
     ],
   },
   {
     path: 'reactive',
-    component: ReactiveComponent,
+    loadComponent: () => import('./reactive/reactive.component').then((m) => m.ReactiveComponent),
     loadChildren: () => import('./reactive/routes').then((mod) => mod.REACTIVE_ROUTES),
   },
   {
     path: 'rxjs-basic',
-    component: RxjsBasicComponent,
+    loadComponent: () => import('./rxjs-basic/rxjs-basic.component').then((m) => m.RxjsBasicComponent),
     loadChildren: () => import('./rxjs-basic/routes').then((mod) => mod.RXJS_BASIC),
   },
   {
