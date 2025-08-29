@@ -8,16 +8,28 @@
   </header>
   <section class="main">
     <ul class="todo-list">
-      <li class="todo" *ngFor="let todo of todos$ | async">
-        <div class="view">
-          <input class="toggle" type="checkbox" [checked]="todo.completed" [(ngModel)]="todo.completed" (ngModelChange)="toggleComplete(todo);">
-          <label *ngIf="!todo.editing">{{todo.title}}</label>
-          <button class="edit" *ngIf="!todo.editing" (click)="editTodo(todo)">Edit</button>
-          <button class="destroy" *ngIf="!todo.editing" (click)="removeTodo(todo)">Destroy</button>
-          <input class="edit" *ngIf="todo.editing" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
-          <button class="destroy" *ngIf="todo.editing" (click)="stopEditing(todo)">Cancel</button>
-        </div>
-      </li>
+      @for (todo of todos$ | async; track todo) {
+        <li class="todo">
+          <div class="view">
+            <input class="toggle" type="checkbox" [checked]="todo.completed" [(ngModel)]="todo.completed" (ngModelChange)="toggleComplete(todo);">
+            @if (!todo.editing) {
+              <label>{{todo.title}}</label>
+            }
+            @if (!todo.editing) {
+              <button class="edit" (click)="editTodo(todo)">Edit</button>
+            }
+            @if (!todo.editing) {
+              <button class="destroy" (click)="removeTodo(todo)">Destroy</button>
+            }
+            @if (todo.editing) {
+              <input class="edit" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
+            }
+            @if (todo.editing) {
+              <button class="destroy" (click)="stopEditing(todo)">Cancel</button>
+            }
+          </div>
+        </li>
+      }
     </ul>
   </section>
   <footer class="footer">
@@ -27,18 +39,30 @@
 </div>
 
 <ul class="list-group mb-3">
-  <li *ngFor="let todo of todos$ | async" class="list-group-item d-flex justify-content-between align-items-center">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" [checked]="todo.completed" [(ngModel)]="todo.completed" (ngModelChange)="toggleComplete(todo)" id="todoCheck{{todo.id}}">
-      <label class="form-check-label" for="todoCheck{{todo.id}}" *ngIf="!todo.editing">
-        {{todo.title}}
-      </label>
-    </div>
-    <div class="d-flex">
-      <button class="btn btn-secondary btn-sm" *ngIf="!todo.editing" (click)="editTodo(todo)">Edit</button>
-      <button class="btn btn-danger btn-sm" *ngIf="!todo.editing" (click)="removeTodo(todo)">Delete</button>
-      <input class="new-todo" *ngIf="todo.editing" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
-      <button class="btn btn-secondary btn-sm" *ngIf="todo.editing" (click)="stopEditing(todo)">Cancel</button>
-    </div>
-  </li>
+  @for (todo of todos$ | async; track todo) {
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [checked]="todo.completed" [(ngModel)]="todo.completed" (ngModelChange)="toggleComplete(todo)" id="todoCheck{{todo.id}}">
+        @if (!todo.editing) {
+          <label class="form-check-label" for="todoCheck{{todo.id}}">
+            {{todo.title}}
+          </label>
+        }
+      </div>
+      <div class="d-flex">
+        @if (!todo.editing) {
+          <button class="btn btn-secondary btn-sm" (click)="editTodo(todo)">Edit</button>
+        }
+        @if (!todo.editing) {
+          <button class="btn btn-danger btn-sm" (click)="removeTodo(todo)">Delete</button>
+        }
+        @if (todo.editing) {
+          <input class="new-todo" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
+        }
+        @if (todo.editing) {
+          <button class="btn btn-secondary btn-sm" (click)="stopEditing(todo)">Cancel</button>
+        }
+      </div>
+    </li>
+  }
 </ul>

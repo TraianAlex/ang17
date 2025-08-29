@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 
 import { Hero } from '../../services/hero.service';
@@ -18,10 +17,10 @@ export const Sizes = {
 
 @Component({
     selector: 'rx-hero-badge',
-    imports: [CommonModule],
+    imports: [],
     standalone: true,
     template: `
-    <ng-container *ngIf="hero">
+    @if (hero) {
       <div>
         <img
           [src]="
@@ -34,11 +33,11 @@ export const Sizes = {
             hero.thumbnail.extension
           "
           (load)="loaded = true"
-        />
+          />
         <div class="name">{{ hero.name }}</div>
       </div>
-    </ng-container>
-  `,
+    }
+    `,
     styles: [
         `
       :host {
