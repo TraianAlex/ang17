@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Person, Film, Starship, Planet } from './sw.models';
@@ -9,9 +9,9 @@ import { map, catchError, timeout } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataService {
-  private baseUrl = 'https://swapi.co/api';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
+  private baseUrl = 'https://swapi.co/api';
 
   // getPeople(selector: () => {}): Observable<Person[]> {
   getPeople(): Observable<Person[]> {
