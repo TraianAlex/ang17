@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { map } from 'rxjs';
@@ -13,7 +13,7 @@ import { Todo, TodosService } from './todos.service';
     styleUrl: './todos.component.scss'
 })
 export class TodosBasicComponent {
-  @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
+  readonly todoInputRef = viewChild.required<ElementRef<HTMLInputElement>>('todoInput');
   todoService = inject(TodosService);
 
   todos$ = this.todoService.todos$.pipe(map((state) => state.todos));
@@ -25,7 +25,7 @@ export class TodosBasicComponent {
       return;
     }
     this.todoService.addTodo(title);
-    this.todoInputRef.nativeElement.value = '';
+    this.todoInputRef().nativeElement.value = '';
   }
 
   toggleComplete(todo: Todo): void {

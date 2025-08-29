@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, map, tap } from 'rxjs';
@@ -13,7 +13,7 @@ import { Todo, TodosService } from './todos.service';
     styleUrl: './todos.component.scss'
 })
 export class TodosComponent2 {
-  @ViewChild('todoInput') todoInputRef!: ElementRef<HTMLInputElement>;
+  readonly todoInputRef = viewChild.required<ElementRef<HTMLInputElement>>('todoInput');
   todoService = inject(TodosService);
   todos$ = this.todoService.todosWithAdd$;
   //todos$ = this.todoService.todosWithUpdate$;
@@ -31,7 +31,7 @@ export class TodosComponent2 {
       return;
     }
     this.todoService.addTodo(title);
-    this.todoInputRef.nativeElement.value = '';
+    this.todoInputRef().nativeElement.value = '';
   }
 
   movePageBy(moveBy: number) {
