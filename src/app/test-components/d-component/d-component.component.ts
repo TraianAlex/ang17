@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
     selector: 'app-d-component',
@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
     styleUrl: './d-component.component.scss'
 })
 export class DComponent {
-  @Input() propD1!: string;
-  @Input() propD2!: string;
+  readonly propD1 = input.required<string>();
+  readonly propD2 = input.required<string>();
 }

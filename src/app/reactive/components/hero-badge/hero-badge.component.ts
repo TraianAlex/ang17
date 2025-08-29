@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 
 import { Hero } from '../../services/hero.service';
 
@@ -20,21 +20,21 @@ export const Sizes = {
     imports: [],
     standalone: true,
     template: `
-    @if (hero) {
+    @if (hero()) {
       <div>
         <img
           [src]="
-            hero.thumbnail.path +
+            hero()?.thumbnail?.path +
             '/' +
-            layout +
+            layout() +
             '_' +
-            size +
+            size() +
             '.' +
-            hero.thumbnail.extension
+            hero()?.thumbnail?.extension
           "
           (load)="loaded = true"
           />
-        <div class="name">{{ hero.name }}</div>
+        <div class="name">{{ hero()?.name }}</div>
       </div>
     }
     `,
@@ -64,9 +64,9 @@ export const Sizes = {
     }
 })
 export class HeroBadgeComponent implements OnInit {
-  @Input() hero: Hero | null = null;
-  @Input() layout = Layouts.standard;
-  @Input() size = Sizes.medium;
+  readonly hero = input<Hero | null>(null);
+  readonly layout = input(Layouts.standard);
+  readonly size = input(Sizes.medium);
   loaded = false;
 
   ngOnInit() {}

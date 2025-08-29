@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
     selector: 'app-e-component',
@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
     styleUrl: './e-component.component.scss'
 })
 export class EComponent {
-  @Input() item: any;
+  readonly item = input<any>();
 }

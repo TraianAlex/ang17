@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
     selector: 'app-a-component',
@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
     standalone: true,
 })
 export class AComponent {
-  @Input() headline!: string;
-  @Input() body!: string;
+  readonly headline = input.required<string>();
+  readonly body = input.required<string>();
 }

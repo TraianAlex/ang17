@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
     selector: 'app-c-component',
@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
     styleUrl: './c-component.component.scss'
 })
 export class CComponent {
-  @Input() propC1!: string;
-  @Input() propC2!: string;
+  readonly propC1 = input.required<string>();
+  readonly propC2 = input.required<string>();
 }

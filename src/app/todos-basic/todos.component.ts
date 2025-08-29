@@ -8,6 +8,7 @@ import { Todo, TodosService } from './todos.service';
 @Component({
     selector: 'app-todos',
     imports: [CommonModule, FormsModule],
+    standalone: true,
     templateUrl: './todos.component.html',
     styleUrl: './todos.component.scss'
 })
