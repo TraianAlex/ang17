@@ -61,8 +61,9 @@ export class TodosService {
   }
 
   updateTodo(event: Event, todo: Todo): void {
-    const input = event.target as HTMLInputElement; // Cast to HTMLInputElement
-    const title = input.value.trim();
+    // const input = event.target as HTMLInputElement; // Cast to HTMLInputElement
+    // const title = input.value.trim();
+    const title = todo.title.trim();
     if (title) {
       const updatedTodo = { ...todo, title, editing: false };
       this.todosSubject.next({

@@ -22,10 +22,11 @@
               <button class="destroy" (click)="removeTodo(todo)">Destroy</button>
             }
             @if (todo.editing) {
-              <input class="edit" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
+              <input [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
             }
             @if (todo.editing) {
               <button class="destroy" (click)="stopEditing(todo)">Cancel</button>
+              <button class="add-todo" (click)="updateTodo($event, todo)">Save</button>
             }
           </div>
         </li>
@@ -57,7 +58,7 @@
           <button class="btn btn-danger btn-sm" (click)="removeTodo(todo)">Delete</button>
         }
         @if (todo.editing) {
-          <input class="new-todo" [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
+          <input [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)">
         }
         @if (todo.editing) {
           <button class="btn btn-secondary btn-sm" (click)="stopEditing(todo)">Cancel</button>

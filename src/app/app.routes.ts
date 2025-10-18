@@ -15,6 +15,10 @@ export const routes: Routes = [
         loadComponent: () => import('./todos-basic/todos.component').then((m) => m.TodosBasicComponent),
       },
       {
+        path: 'todos-signals',
+        loadComponent: () => import('./todos-signals/todos.component').then((m) => m.TodosSignalsComponent),
+      },
+      {
         path: 'todos-reactive',
         loadComponent: () => import('./todos-reactive/todos.component').then((m) => m.TodosComponent2),
       },
