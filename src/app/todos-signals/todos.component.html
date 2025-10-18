@@ -2,8 +2,15 @@
   <header class="header">
     <h2>Todos (Signals)</h2>
     <div class="input-wrapper">
-      <input class="new-todo" placeholder="What needs to be done?" #todoInput autofocus />
-      <button class="add-todo" (click)="addTodo(todoInput.value)">Add</button>
+      <input
+        class="new-todo"
+        [value]="todoInput()"
+        (input)="todoInput.set($event.target.value)"
+        placeholder="What needs to be done?"
+        autofocus
+        #todoInputRef
+      />
+      <button class="btn add-todo" (click)="addTodo()" [disabled]="!isFormValid()">Add</button>
     </div>
   </header>
   <section class="main">
@@ -25,10 +32,10 @@
           } @if (!todo.editing) {
           <button class="destroy" (click)="removeTodo(todo)">Destroy</button>
           } @if (todo.editing) {
-          <input [(ngModel)]="todo.title" (keyup.enter)="updateTodo($event, todo)" />
+          <input [(ngModel)]="todo.title" (keyup.enter)="updateTodo(todo)" />
           } @if (todo.editing) {
           <button class="destroy" (click)="stopEditing(todo)">Cancel</button>
-          <button class="add-todo" (click)="updateTodo($event, todo)">Save</button>
+          <button class="add-todo" (click)="updateTodo(todo)">Save</button>
           }
         </div>
       </li>

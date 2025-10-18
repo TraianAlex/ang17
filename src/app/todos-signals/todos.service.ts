@@ -44,9 +44,7 @@ export class TodosService {
     this.todosSignal.update((todos) => todos.map((t) => (t.id === todo.id ? { ...t, editing: false } : t)));
   }
 
-  updateTodo(event: Event, todo: Todo): void {
-    // const input = event.target as HTMLInputElement;
-    // const title = input.value.trim();
+  updateTodo(todo: Todo): void {
     const title = todo.title.trim();
     if (title) {
       this.todosSignal.update((todos) => todos.map((t) => (t.id === todo.id ? { ...t, title, editing: false } : t)));
