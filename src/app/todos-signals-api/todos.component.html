@@ -1,0 +1,56 @@
+<div class="todo-app">
+  <header class="header">
+    <h2>Todos (Signals API)</h2>
+    <div class="input-wrapper">
+      <input
+        class="new-todo"
+        [value]="todoInput()"
+        (input)="todoInput.set($event.target.value)"
+        placeholder="What needs to be done?"
+        autofocus
+        #todoInputRef
+      />
+      <button class="btn add-todo" (click)="addTodo()" [disabled]="!isFormValid() || loading()">Add</button>
+    </div>
+    @if (error()) {
+    <div class="error-message">{{ error() }}</div>
+    } @if (loading()) {
+    <div class="loading-message">Loading...</div>
+    }
+  </header>
+  <section class="main">
+    <ul class="todo-list">
+      @for (todo of todos(); track todo.id ?? todo._localId ?? $index) {
+      <li class="todo">
+        <div class="view">
+          <input
+            class="toggle"
+            type="checkbox"
+            [checked]="todo.completed"
+            [(ngModel)]="todo.completed"
+            (ngModelChange)="toggleComplete(todo)"
+          />
+          @if (!todo.editing) {
+          <label>{{ todo.todo }}</label>
+          } @if (!todo.editing) {
+          <button class="edit" (click)="editTodo(todo)">Edit</button>
+          } @if (!todo.editing) {
+          <button class="destroy" (click)="removeTodo(todo, $event)">Destroy</button>
+          } @if (todo.editing) {
+          <input [(ngModel)]="todo.todo" (keyup.enter)="updateTodo(todo)" />
+          } @if (todo.editing) {
+          <button class="destroy" (click)="stopEditing(todo)">Cancel</button>
+          <button class="add-todo" (click)="updateTodo(todo)">Save</button>
+          }
+        </div>
+      </li>
+      }
+    </ul>
+  </section>
+  <footer class="footer">
+    <span class="todo-count"
+      ><strong>{{ todosLeft() }} of {{ todosCount() }}</strong> item(s) left</span
+    >
+    <button class="clear-completed" (click)="clearCompleted()">Clear completed</button>
+  </footer>
+</div>

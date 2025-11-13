@@ -1,0 +1,144 @@
+.todo-app {
+  background: #fff;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  width: 550px;
+}
+
+.header h2 {
+  color: #333;
+  font-size: 50px;
+  text-align: center;
+  font-weight: 100;
+}
+
+.new-todo {
+  flex: 1;
+  position: relative;
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  line-height: 1.4em;
+  border: none;
+  padding: 16px;
+  box-sizing: border-box;
+  margin-right: 8px; /* Ensures some space between the input and the button */
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.add-todo {
+  padding: 8px 16px;
+  margin: 0 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-todo:hover {
+  background-color: #0056b3;
+}
+
+.add-todo:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ff6b6b;
+  padding: 10px;
+  text-align: center;
+  background-color: #ffe0e0;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.loading-message {
+  color: #007bff;
+  padding: 10px;
+  text-align: center;
+  background-color: #e0f0ff;
+  margin: 10px 0;
+  border-radius: 4px;
+}
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo {
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  justify-content: space-between;
+}
+
+.todo .toggle {
+  text-align: center;
+  margin-right: 20px;
+}
+
+.todo label {
+  flex: 1;
+  margin-right: 10px; /* Give some space between the label and buttons */
+}
+
+.view {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.destroy,
+.edit {
+  margin-left: 5px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.destroy {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+.edit {
+  background-color: #feca57;
+  color: white;
+}
+
+.destroy:hover {
+  background-color: #ff5252;
+}
+
+.edit:hover {
+  background-color: #ff9f43;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.clear-completed {
+  background-color: #6c757d;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.todo-count {
+  margin: 0;
+}
