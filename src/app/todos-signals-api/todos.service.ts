@@ -5,13 +5,12 @@ import { Observable, of, forkJoin } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 export interface Todo {
-  id?: number;
+  id?: number | string;
   todo: string;
   completed: boolean;
   userId: number;
   editing?: boolean; // Optional property to track editing state
   isDeleted?: boolean;
-  _localId?: string; // Temporary unique ID for todos without server IDs
 }
 
 interface TodosResponse {
@@ -36,7 +35,7 @@ export class TodosService {
   private localTodosSignal = signal<Todo[]>([]);
   private loadingSignal = signal<boolean>(false);
   private errorSignal = signal<string | null>(null);
-  private deletedIdsSignal = signal<Set<number>>(new Set());
+  private deletedIdsSignal = signal<Set<number | string>>(new Set());
   private localIdCounter = 0;
 
   // Public readonly signals
@@ -61,6 +60,7 @@ export class TodosService {
   };
 
   apiTodos = toSignal(this.todos$(), { initialValue: [] });
+
   todos = computed(() => {
     const api = this.apiTodos();
     const local = this.localTodosSignal();
@@ -81,14 +81,15 @@ export class TodosService {
         // Overwrite API todo if exists, or add new
         resultMap.set(t.id, t);
       } else if (!t.id) {
-        // Local todos without IDs use their _localId or generate one based on index
-        const uniqueKey = t._localId || `local-${index}`;
+        // Local todos without IDs use their Id or generate one based on index
+        const uniqueKey = t.id || `local-${index}`;
         resultMap.set(uniqueKey, t);
       }
     });
 
     return Array.from(resultMap.values());
   });
+
   todosCount = computed(() => this.todos().length);
   todosLeft = computed(() => this.todos().filter((todo) => !todo.completed && !todo.isDeleted).length);
 
@@ -97,11 +98,12 @@ export class TodosService {
       todo: title.trim(),
       completed: false,
       userId: 1,
-      _localId: `local-${this.localIdCounter++}`, // Assign unique ID immediately for tracking
+      id: `local-${this.localIdCounter++}`, // Assign unique ID immediately for tracking
     };
 
     // Add to local immediately for optimistic UI update
     this.localTodosSignal.update((todos) => [...todos, newTodo]);
+    console.log('localTodosSignal', this.localTodosSignal());
 
     this.loadingSignal.set(true);
     this.http
@@ -111,18 +113,12 @@ export class TodosService {
           this.errorSignal.set('Failed to add todo');
           console.error('Error adding todo:', error);
           // Remove the todo from local on error
-          this.localTodosSignal.update((todos) => todos.filter((t) => t._localId !== newTodo._localId));
+          this.localTodosSignal.update((todos) => todos.filter((t) => t.id !== newTodo.id));
           return of(null);
         })
       )
       .subscribe({
-        next: (todo) => {
-          if (todo) {
-            // Replace the local todo (with _localId) with the server response (with id)
-            this.localTodosSignal.update((todos) =>
-              todos.map((t) => (t._localId === newTodo._localId ? { ...todo } : t))
-            );
-          }
+        next: () => {
           this.loadingSignal.set(false);
         },
         error: () => {
@@ -143,7 +139,7 @@ export class TodosService {
       .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
       .pipe(
         catchError((error) => {
-          this.errorSignal.set('Failed to update todo');
+          // this.errorSignal.set('Failed to update todo');
           console.error('Error updating todo:', error);
           // Revert the change on error
           this.localTodosSignal.update((todos) => todos.map((t) => (t.id === todo.id ? todo : t)));
@@ -197,7 +193,7 @@ export class TodosService {
       .put<Todo>(`${this.apiUrl}/todos/${todo.id}`, JSON.stringify(updatedTodo), this.httpOptions)
       .pipe(
         catchError((error) => {
-          this.errorSignal.set('Failed to update todo');
+         // this.errorSignal.set('Failed to update todo');
           console.error('Error updating todo:', error);
           // Revert the change on error if it was in local
           if (existsInLocal) {
@@ -252,7 +248,7 @@ export class TodosService {
       .delete<Todo>(`${this.apiUrl}/todos/${todo.id}`)
       .pipe(
         catchError((error) => {
-          this.errorSignal.set('Failed to delete todo');
+          // this.errorSignal.set('Failed to delete todo');
           console.error('Error deleting todo:', error);
           // Revert the deletion - remove from deletedIds and restore to local if it was there
           this.deletedIdsSignal.update((deletedIds) => {
@@ -260,9 +256,6 @@ export class TodosService {
             newSet.delete(todo.id!);
             return newSet;
           });
-          if (existsInLocal) {
-            this.localTodosSignal.update((todos) => [...todos, todo]);
-          }
           return of(null);
         })
       )
