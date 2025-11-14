@@ -20,7 +20,7 @@
   </header>
   <section class="main">
     <ul class="todo-list">
-      @for (todo of todos(); track todo.id ?? todo.id ?? $index) {
+      @for (todo of todos(); track todo.id) {
       <li class="todo">
         <div class="view">
           <input
